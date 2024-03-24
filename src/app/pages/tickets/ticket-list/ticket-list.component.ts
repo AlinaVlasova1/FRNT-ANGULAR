@@ -30,10 +30,10 @@ export class TicketListComponent implements OnInit {
     //
     // return <ITour>this.findTour;
 
-    if (tourName === "") {
+    if (tourName === "" || tourName.length < 3 ) {
       this.tickets = [...this.ticketsCopy];
     } else {
-      this.tickets = this.ticketsCopy.filter((el) => el.name === tourName);
+      this.tickets = this.ticketsCopy.filter((el) => el.name.substring(1,tourName.length ) === tourName);
     }
 
   }

@@ -12,6 +12,7 @@ import {DropdownModule} from "primeng/dropdown";
 import {FormsModule} from "@angular/forms";
 import {ButtonModule} from "primeng/button";
 import { SearchComponent } from './search/search.component';
+import {BlocksStyleDirective} from "../../derective/blocks-style.directive";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { SearchComponent } from './search/search.component';
     FooterComponent,
     TicketListComponent,
     AsaideComponent,
-    SearchComponent
+    SearchComponent,
+    BlocksStyleDirective
   ],
   imports: [
     CommonModule,

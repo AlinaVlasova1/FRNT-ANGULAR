@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ITour} from "../../../models/tours";
 
 @Component({
@@ -6,9 +6,8 @@ import {ITour} from "../../../models/tours";
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit/*, OnChanges */{
   @Output() tourEvent = new EventEmitter<string>();
-  @Input() tourName: string;
   constructor() { }
 
   ngOnInit(): void {
@@ -17,4 +16,27 @@ export class SearchComponent implements OnInit {
   nameTour(value: string){
     this.tourEvent.emit(value);
   }
+
+  /*ngOnChanges(changes: SimpleChanges) {
+    for (let name in changes) {
+      let tourName = changes[name];
+      this.tourEvent  = JSON.stringify(tourName.currentValue);
+      }
+    /!*if( ev.length >= 3){
+      this.tourEvent = ev;
+      console.log(ev);
+    }*!/
+  }*/
+
+  onKey(ev: any): void{
+    if( ev.length >= 3){
+      this.tourEvent = ev;
+      console.log(ev);
+    }
+
+  }
+  getName(ev: string){
+    this.tourEvent.emit(ev);
+  }
+
 }

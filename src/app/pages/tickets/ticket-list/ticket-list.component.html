@@ -1,5 +1,6 @@
 <app-search (tourEvent)="searchTour($event)"></app-search>
-<div class="d-flex flex-wrap justify-content-around">
+<div appBlocksStyle
+  class="d-flex flex-wrap justify-content-around">
   <div class="ticket-item col-3 m-2"
        *ngFor="let item of tickets; let i = index"
        [ngStyle]="{'display': hiddenTour(item)}">
