@@ -12,7 +12,7 @@ import {DropdownModule} from "primeng/dropdown";
 import {FormsModule} from "@angular/forms";
 import {ButtonModule} from "primeng/button";
 import { SearchComponent } from './search/search.component';
-import {BlocksStyleDirective} from "../../derective/blocks-style.directive";
+import {BlocksStyleDirective} from "../../directive/blocks-style.directive";
 
 
 @NgModule({

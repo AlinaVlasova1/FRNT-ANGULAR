@@ -4,5 +4,6 @@ export interface ITour{
   tourOperator: string,
   price: string,
   img:string,
-  hidden: string
+  hidden: string,
+  id: string
 }
