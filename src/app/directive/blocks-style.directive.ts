@@ -25,7 +25,7 @@ export class BlocksStyleDirective implements OnInit, OnChanges{
   private startRender: boolean;
 
   private items: HTMLElement[];
-  private index: number = 0;
+  private index: number;
   public activeElementIndex: number;
   $event: KeyboardEvent;
 
@@ -69,27 +69,54 @@ export class BlocksStyleDirective implements OnInit, OnChanges{
     console.log("this.index", this.index);
     console.log("this.items", this.items);
     console.log('ev', ev);
-    if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft'){
-      this.items[this.index].removeAttribute('style');
+    if ( this.index >= 35 ){
+      const const1 = 35;
+      this.index = const1;
+      this.activeElementIndex = const1;
+    }
+    else if ((this.index-1)  <= (-1)){
+      const const2 = 0
+      this.index = const2;
+      this.activeElementIndex = const2;
     }
 
+      if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft'){
+        this.items[this.index].removeAttribute('style');
+      }
 
-    if (ev.key === 'ArrowRight'){
-      this.index++;
-      if (this.items[this.index]){
-        (this.items[this.index] as HTMLElement).setAttribute('style', 'border: 2px solid red');
+      if (ev.key === 'ArrowRight'){
+        if (this.index >= 35){
+          const const1 = 35;
+          this.index = const1;
+          this.activeElementIndex = const1;
+        }else{
+          this.index++;
+        }
+        if (this.items[this.index]){
+          (this.items[this.index] as HTMLElement).setAttribute('style', 'border: 2px solid red');
+        }
+      } else if (ev.key === 'ArrowLeft'){
+        if ((this.index-1)  <= (-1)){
+          const const2 = 0
+          this.index = const2;
+          this.activeElementIndex = const2;
+        } else{
+          this.index--;
+        }
+
+        if (this.items[this.index]){
+          this.items[this.index].setAttribute('style', 'border: 2px solid red');
+        }
       }
-    } else if (ev.key === 'ArrowLeft'){
-      this.index--;
-      if (this.items[this.index]){
-        this.items[this.index].setAttribute('style', 'border: 2px solid red');
-      }
-    }
-    this.activeElementIndex = this.index;
+      this.activeElementIndex = this.index;
+
+
   }
 
   initStyle(index: number){
     if (this.items[index]){
+      this.activeElementIndex=index;
+      this.index = index;
       this.items[this.index].removeAttribute('style');
       (this.items[index] as HTMLElement).setAttribute('style', 'border: 2px solid red');
     }
