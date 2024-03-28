@@ -78,5 +78,7 @@ export class TicketListComponent implements OnInit, AfterViewInit {
 
   directiveRenderComplete(ev: boolean){
     this.blockDirective.initStyle(3);
+    const element: HTMLElement = this.tourWrap.nativeElement;
+    element.setAttribute('style', 'background-color: #f1fff1')
   }
 }

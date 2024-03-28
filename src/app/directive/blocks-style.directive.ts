@@ -54,7 +54,10 @@ export class BlocksStyleDirective implements OnInit, OnChanges{
         } else{
           console.error('Не передан селектор');
         }
-        this.renderComplete.emit(true);
+        setTimeout(() => {
+          this.renderComplete.emit(true);
+        })
+
       }
 
 
@@ -87,7 +90,8 @@ export class BlocksStyleDirective implements OnInit, OnChanges{
 
   initStyle(index: number){
     if (this.items[index]){
-      (this.items[this.index] as HTMLElement).setAttribute('style', 'border: 2px solid red');
+      this.items[this.index].removeAttribute('style');
+      (this.items[index] as HTMLElement).setAttribute('style', 'border: 2px solid red');
     }
   }
 
