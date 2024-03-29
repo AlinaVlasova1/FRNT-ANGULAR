@@ -49,11 +49,13 @@ export class TicketListComponent implements OnInit, AfterViewInit {
     // this.findTour = this.tickets.find((t) => t.name === tour);
     //
     // return <ITour>this.findTour;
+    const str = tourName.length;
 
-    if (tourName === "" || tourName.length < 3 ) {
+    if ((tourName === "") || (str <= 2) ) {
       this.tickets = [...this.ticketsCopy];
     } else {
-      this.tickets = this.ticketsCopy.filter((el) => el.name.substring(1,tourName.length ) === tourName);
+
+      this.tickets = this.ticketsCopy.filter((el) => el.name.substring(0,str ).toLowerCase() === tourName);
     }
 
   }
