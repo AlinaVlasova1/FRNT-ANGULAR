@@ -3,7 +3,7 @@
     <p-menubar [model]="items"></p-menubar>
   </div>
   <div class="login">
-    <p>{{this.user.login}}</p>
+    <p>{{this.user?.login}}</p>
   </div>
   <div class="time-block">
     <div>{{time | date: 'HH:mm:ss'}}</div>

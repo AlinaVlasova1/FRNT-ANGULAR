@@ -22,10 +22,12 @@ export class BlocksStyleDirective implements OnInit, OnChanges{
   @Input() complete: boolean = false;
   @Output() renderComplete = new EventEmitter();
   @Output() start = new EventEmitter();
+  @Output() onEnter = new EventEmitter();
   private startRender: boolean;
 
   private items: HTMLElement[];
   private index: number;
+  @Input() itemsChanges: boolean = false;
   public activeElementIndex: number;
   $event: KeyboardEvent;
 
@@ -36,16 +38,24 @@ export class BlocksStyleDirective implements OnInit, OnChanges{
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.start.emit(true);
+    console.log('changes', changes)
+    if (changes['complete']?.currentValue) {
+      this.renderBorder();
+    }
+    if (changes['itemsChanges']?.currentValue) {
+      this.renderBorder();
+    }
+
   }
 
   renderBorder(){
-
+  console.log('run')
     setTimeout(() => {
       this.activeElementIndex = 0;
       if (this.complete){
         if (this.selector){
           this.items = this.el.nativeElement.querySelectorAll(this.selector);
+          console.log('this.items', this.items.length)
           if (this.initFirst){
             if (this.items[this.index]){
               (this.items[this.index] as HTMLElement).setAttribute('style', 'border: 2px solid red');
@@ -61,7 +71,7 @@ export class BlocksStyleDirective implements OnInit, OnChanges{
       }
 
 
-    })
+    }, 1000)
 
   }
 
@@ -107,6 +117,8 @@ export class BlocksStyleDirective implements OnInit, OnChanges{
         if (this.items[this.index]){
           this.items[this.index].setAttribute('style', 'border: 2px solid red');
         }
+      } else if (ev.key ==="Enter") {
+        this.onEnter.emit({index: this.index})
       }
       this.activeElementIndex = this.index;
 

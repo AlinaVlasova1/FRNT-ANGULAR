@@ -1,7 +1,7 @@
 <app-search (tourEvent)="searchTour($event)"></app-search>
 <div>
   <div>
-    <p>Количество элементов: {{tourWrap.childElementCount}}</p>
+    <p>Количество элементов: {{tickets.length}}</p>
     <p>Активный элемент: {{blockDirective.activeElementIndex}}</p>
   </div>
   <div appBlocksStyle
@@ -9,8 +9,9 @@
        #blockDirective='blocksStyle'
        [selector]="'.ticket-item'"
        [initFirst]="true"
+       (onEnter)="onEnter($event)"
        [complete]="finallyComplete"
-       (start)="startRender($event)"
+       [itemsChanges]="itemsChanges"
        (renderComplete)="directiveRenderComplete($event)"
        class="d-flex flex-wrap justify-content-around">
     <div class="ticket-item col-3 m-2"

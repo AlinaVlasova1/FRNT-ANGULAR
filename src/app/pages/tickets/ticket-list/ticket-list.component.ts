@@ -13,10 +13,11 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./ticket-list.component.scss']
 })
 export class TicketListComponent implements OnInit, AfterViewInit {
-  tickets: ITour[] ;
+  tickets: ITour[] = [];
   ticketsCopy: ITour[];
   findTour: ITour | undefined;
   finallyComplete: boolean = false;
+  itemsChanges: boolean;
   constructor(private ticketService: TicketsService,
               private ticketStorage: TiсketsStorageService,
               private router: Router) {
@@ -58,6 +59,8 @@ export class TicketListComponent implements OnInit, AfterViewInit {
       this.tickets = this.ticketsCopy.filter((el) => el.name.substring(0,str ).toLowerCase() === tourName);
     }
 
+    this.startRender()
+
   }
 
   hiddenTour(tour: ITour): string{
@@ -72,12 +75,15 @@ export class TicketListComponent implements OnInit, AfterViewInit {
     this.router.navigate([`/tickets/ticket/${item.id}`]);
   }
 
-  startRender(ev:string){
+  startRender(){
     if (this.finallyComplete){
       this.blockDirective.renderBorder();
     }
   }
-
+  onEnter(ev: {index: number}): void {
+    const tour = this.tickets[ev.index];
+    this.goToTicketInfoPage(tour);
+  }
   directiveRenderComplete(ev: boolean){
     this.blockDirective.initStyle(3);
     const element: HTMLElement = this.tourWrap.nativeElement;
