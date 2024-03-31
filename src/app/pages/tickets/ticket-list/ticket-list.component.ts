@@ -50,13 +50,14 @@ export class TicketListComponent implements OnInit, AfterViewInit {
     // this.findTour = this.tickets.find((t) => t.name === tour);
     //
     // return <ITour>this.findTour;
-    const str = tourName.length;
-
-    if ((tourName === "") || (str <= 2) ) {
+    const strLength = tourName.length;
+    const lastIndex = strLength - 1;
+    const searchNameTour = new RegExp(tourName, "ig");
+    if ((tourName === "") || (strLength <= 2) ) {
       this.tickets = [...this.ticketsCopy];
     } else {
 
-      this.tickets = this.ticketsCopy.filter((el) => el.name.substring(0,str ).toLowerCase() === tourName);
+      this.tickets = this.ticketsCopy.filter((el) => el.name.toLowerCase().includes(tourName.toLowerCase()));
     }
 
     this.startRender()
