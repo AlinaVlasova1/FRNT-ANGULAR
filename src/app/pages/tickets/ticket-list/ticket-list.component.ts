@@ -1,10 +1,20 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import {TicketsService} from "../../../services/tickets/tickets.service";
-import {ITour} from "../../../models/tours";
+import {ITour, ITourTypeSelect} from "../../../models/tours";
 import {TiсketsStorageService} from "../../../services/tiсkets-storage/tiсkets-storage.service";
 import {Router} from "@angular/router";
 import {BlocksStyleDirective} from "../../../directive/blocks-style.directive";
-import {firstValueFrom, Observable, of} from "rxjs";
+import {firstValueFrom, Observable, of, Subscription} from "rxjs";
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -12,12 +22,15 @@ import { map } from 'rxjs/operators';
   templateUrl: './ticket-list.component.html',
   styleUrls: ['./ticket-list.component.scss']
 })
-export class TicketListComponent implements OnInit, AfterViewInit {
+export class TicketListComponent implements OnInit, OnDestroy, AfterViewInit {
   tickets: ITour[] = [];
   ticketsCopy: ITour[];
   findTour: ITour | undefined;
   finallyComplete: boolean = false;
   itemsChanges: boolean;
+  private tourUnsubscriber: Subscription;
+  ticketsSub = this.ticketService.getTickets();
+
   constructor(private ticketService: TicketsService,
               private ticketStorage: TiсketsStorageService,
               private router: Router) {
@@ -31,17 +44,57 @@ export class TicketListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
      this.ticketService.getTickets().subscribe(
        (data: ITour[]) => {
-        this.tickets = data
-        this.ticketsCopy = data;
-        this.ticketStorage.setStorage(data);
-        this.finallyComplete = true;
-      }
+         if (Array.isArray(data)) {
+           this.tickets = data
+           this.ticketsCopy = data;
+           this.ticketStorage.setStorage(data);
+           this.finallyComplete = true;
+         }
+      }, (err) => {
+         console.log('err', err)
+       }
     );
+    this.ticketService.getTicketTypeObservable().subscribe((data:ITourTypeSelect) => {
+      console.log('data', data);
+
+      let ticketType: string;
+      switch (data.value) {
+        case "single":
+          this.tickets = this.ticketsCopy.filter((el) => el.type === "single");
+          break;
+        case "multi":
+          this.tickets = this.ticketsCopy.filter((el) => el.type === "multi");
+          break;
+        case "all":
+          this.tickets = [...this.ticketsCopy];
+          break;
+
+      }
+
+      if (data.date) {
+        const dateWithoutTime = new Date(data.date).toISOString().split('T');
+        const dateValue = dateWithoutTime[0]
+        console.log('dateValue',dateValue)
+        this.tickets = this.ticketsCopy.filter((el) => el.date === dateValue);
+      }
+      setTimeout(() => {
+
+        this.blockDirective.updateItems();
+
+        this.blockDirective.initStyle(0);  // сбрасываем индекс на 0 элемент
+      });
+    });
   }
+
   ngAfterViewInit(){
 
   }
+  ngOnDestroy() {
+    if (this.tourUnsubscriber) {
+      this.tourUnsubscriber.unsubscribe();
+    }
 
+  }
  /* startRender(ev: string){
     this.blockDirective.renderBorder();
   }
@@ -86,8 +139,11 @@ export class TicketListComponent implements OnInit, AfterViewInit {
     this.goToTicketInfoPage(tour);
   }
   directiveRenderComplete(ev: boolean){
-    this.blockDirective.initStyle(3);
+    this.blockDirective.initStyle(0);
     const element: HTMLElement = this.tourWrap.nativeElement;
     element.setAttribute('style', 'background-color: #f1fff1')
   }
+
+
+
 }

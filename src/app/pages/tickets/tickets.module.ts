@@ -13,6 +13,7 @@ import {FormsModule} from "@angular/forms";
 import {ButtonModule} from "primeng/button";
 import { SearchComponent } from './search/search.component';
 import {BlocksStyleDirective} from "../../directive/blocks-style.directive";
+import {CalendarModule} from "primeng/calendar";
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import {BlocksStyleDirective} from "../../directive/blocks-style.directive";
     MenubarModule,
     DropdownModule,
     FormsModule,
-    ButtonModule
+    ButtonModule,
+    CalendarModule
   ]
 })
 export class TicketsModule { }

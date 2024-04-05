@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {IMenuType} from "../../models/menuType";
-import {ITour} from "../../models/tours";
+import {ITour, ITourTypeSelect} from "../../models/tours";
+import {Subscription} from "rxjs";
+import {TicketsService} from "../../services/tickets/tickets.service";
 
 @Component({
   selector: 'app-tickets',
@@ -10,9 +12,12 @@ import {ITour} from "../../models/tours";
 export class TicketsComponent implements OnInit {
   selectedType: IMenuType;
 
+
   constructor() { }
 
   ngOnInit(): void {
+
+
   }
 
   updateSelectedType(ev: IMenuType): void {
