@@ -14,6 +14,8 @@ import {ButtonModule} from "primeng/button";
 import { SearchComponent } from './search/search.component';
 import {BlocksStyleDirective} from "../../directive/blocks-style.directive";
 import {CalendarModule} from "primeng/calendar";
+import {ToastModule} from "primeng/toast";
+import {MessageService} from "primeng/api";
 
 
 @NgModule({
@@ -33,7 +35,9 @@ import {CalendarModule} from "primeng/calendar";
     DropdownModule,
     FormsModule,
     ButtonModule,
-    CalendarModule
-  ]
+    CalendarModule,
+    ToastModule
+  ],
+  providers: [MessageService]
 })
 export class TicketsModule { }

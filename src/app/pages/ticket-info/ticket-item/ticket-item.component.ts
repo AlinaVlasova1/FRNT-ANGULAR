@@ -14,7 +14,7 @@ import {UserService} from "../../../services/user/user.service";
 export class TicketItemComponent implements OnInit, AfterViewInit {
 
   ticket: ITour | undefined;
-  user: IUser;
+  user: IUser | undefined;
   userForm: FormGroup;
 
   constructor(private route: ActivatedRoute,

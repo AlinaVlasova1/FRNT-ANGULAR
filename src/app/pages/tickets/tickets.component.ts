@@ -1,4 +1,4 @@
-import {Component, OnInit, Output} from '@angular/core';
+import {Component, OnDestroy, OnInit, Output} from '@angular/core';
 import {IMenuType} from "../../models/menuType";
 import {ITour, ITourTypeSelect} from "../../models/tours";
 import {filter, Subscription} from "rxjs";
@@ -11,16 +11,19 @@ import {
   NavigationStart,
   Router
 } from "@angular/router";
+import {UserService} from "../../services/user/user.service";
 
 @Component({
   selector: 'app-tickets',
   templateUrl: './tickets.component.html',
   styleUrls: ['./tickets.component.scss']
 })
-export class TicketsComponent implements OnInit {
+export class TicketsComponent implements OnInit, OnDestroy {
   @Output() public selectedType: IMenuType;
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router,
+              private route: ActivatedRoute,
+              private  userService: UserService) { }
   showAside: boolean = true;
   ngOnInit(): void {
 
@@ -35,6 +38,9 @@ export class TicketsComponent implements OnInit {
         this.showAside = !(routeData as any)?.asideHidden;
       }
     })
+  }
+  ngOnDestroy() {
+    this.userService.clearUserInfo();
   }
 
   updateSelectedType(ev: IMenuType): void {

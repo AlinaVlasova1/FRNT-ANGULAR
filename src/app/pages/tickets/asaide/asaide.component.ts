@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {IMenuType} from "../../../models/menuType";
 import {ITourTypeSelect} from "../../../models/tours";
 import {TicketsService} from "../../../services/tickets/tickets.service";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-asaide',
@@ -17,7 +18,8 @@ export class AsaideComponent implements OnInit {
     {label: 'Групповой', value: 'multi'}
   ]
   @Output() updateMenuType: EventEmitter<IMenuType> = new EventEmitter();
-  constructor(private ticketService: TicketsService) { }
+  constructor(private ticketService: TicketsService,
+              private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.menuTypes = [
@@ -38,6 +40,18 @@ export class AsaideComponent implements OnInit {
   selectDate(ev: string) {
     console.log('ev', ev)
     this.ticketService.updateTour({date:ev})
+  }
+
+  initRestError(ev: Event): void {
+    this.ticketService.getError().subscribe({
+      next:(data)=> {
+
+      },
+      error: (err) => {
+        console.log('err', err)
+      }
+    });
+    this.messageService.add({severity: 'error', summary: 'Ошибка при запросе на сервер'});
   }
 
 }

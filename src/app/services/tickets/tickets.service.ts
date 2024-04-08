@@ -32,4 +32,8 @@ export class TicketsService {
   updateTour(type:ITourTypeSelect): void {
     this.ticketSubject.next(type);
   }
+
+  getError(): Observable<any> {
+    return this.ticketServiceRest.getRestError();
+  }
 }

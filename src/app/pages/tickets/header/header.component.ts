@@ -13,7 +13,7 @@ import {IMenuType} from "../../../models/menuType";
 export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   items: MenuItem[];
   time: Date;
-  user: IUser;
+  user: IUser | undefined;
   private timeInterval: number;
   private settingsActive = false;
   @Input() menuType: IMenuType;
