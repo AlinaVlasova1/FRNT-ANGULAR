@@ -9,6 +9,7 @@ export class ObservableExampleService {
   private myBehaviourSubject = new BehaviorSubject<string>('some data of Behavior Subject');
   private mySubject = new Subject<string>();
   private myObservable = new Observable<string>((subscriber) => {
+    subscriber.next('synk someValue');
     setTimeout(() => {
       subscriber.next('someValue');
     }, 3000)

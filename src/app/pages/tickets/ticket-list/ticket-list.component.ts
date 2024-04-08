@@ -30,6 +30,7 @@ export class TicketListComponent implements OnInit, OnDestroy, AfterViewInit {
   itemsChanges: boolean;
   private tourUnsubscriber: Subscription;
   ticketsSub = this.ticketService.getTickets();
+  searchvalue: string;
 
   constructor(private ticketService: TicketsService,
               private ticketStorage: TiсketsStorageService,
@@ -54,7 +55,7 @@ export class TicketListComponent implements OnInit, OnDestroy, AfterViewInit {
          console.log('err', err)
        }
     );
-    this.ticketService.getTicketTypeObservable().subscribe((data:ITourTypeSelect) => {
+    this.tourUnsubscriber = this.ticketService.getTicketTypeObservable().subscribe((data:ITourTypeSelect) => {
       console.log('data', data);
 
       let ticketType: string;

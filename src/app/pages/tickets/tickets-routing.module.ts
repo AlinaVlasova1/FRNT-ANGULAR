@@ -14,7 +14,14 @@ const routes: Routes = [
       {
         path: 'ticket/:id',
         loadChildren: () => import('../ticket-info/ticket-info.module').then(m => m.TicketInfoModule)
-      }
+      },
+      {
+        path: 'settings',
+        loadChildren: ()  => import('../settings/settings.module').then(m => m.SettingsModule),
+        data: {
+          asideHidden: true
+        }
+      },
     ]
   },
 ];

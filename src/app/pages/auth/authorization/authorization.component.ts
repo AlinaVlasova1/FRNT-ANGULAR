@@ -39,11 +39,13 @@ export class AuthorizationComponent implements OnInit, OnDestroy {
   onAuth(ev: Event): void{
     const authUser: IUser = {
       password: this.password,
-      login: this.login
+      login: this.login,
+      cardNumber: this.cardNumber
     }
     if(this.authService.checkUser(authUser)){
       this.router.navigate(['tickets/tickets-list']);
       this.userService.setUser(authUser);
+      this.userService.setToken('user-private-token');
     } else {
       this.messageService.add({severity: 'error', summary: 'Данные введены не правильно'});
     }

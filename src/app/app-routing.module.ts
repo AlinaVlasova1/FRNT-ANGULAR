@@ -15,10 +15,7 @@ const routes: Routes = [
     path: "tickets",
     loadChildren: ()  => import('src/app/pages/tickets/tickets.module').then(m => m.TicketsModule)
   },
-  {
-    path: "settings",
-    loadChildren: ()  => import('src/app/pages/settings/settings.module').then(m => m.SettingsModule)
-  },
+
 
   { path: '**',
    redirectTo: 'auth'
