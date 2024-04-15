@@ -4,3 +4,7 @@ export interface IUser {
   password: string,
   cardNumber?: string
 }
+
+export const TOKEN_STORE_NAME = 'token';
+
+

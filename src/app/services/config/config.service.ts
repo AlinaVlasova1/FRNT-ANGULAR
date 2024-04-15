@@ -28,7 +28,12 @@ export class ConfigService {
           const config = ConfigService.config;
           if (config) {
             // set origin host
-            resolve();
+            if (config.runApp) {
+              resolve();
+            } else {
+              reject('Доступ к приложению запрещен ' + JSON.stringify(config));
+            }
+
           } else {
             reject('Ошибка при инициализации конфига - неверный формат ' + config);
           }
