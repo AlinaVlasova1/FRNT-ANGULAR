@@ -3,6 +3,7 @@ import {IMenuType} from "../../../models/menuType";
 import {ITourTypeSelect} from "../../../models/tours";
 import {TicketsService} from "../../../services/tickets/tickets.service";
 import {MessageService} from "primeng/api";
+import {SettingsService} from "../../../services/settings/settings.service";
 
 @Component({
   selector: 'app-asaide',
@@ -19,7 +20,8 @@ export class AsaideComponent implements OnInit {
   ]
   @Output() updateMenuType: EventEmitter<IMenuType> = new EventEmitter();
   constructor(private ticketService: TicketsService,
-              private messageService: MessageService) { }
+              private messageService: MessageService,
+              private settingsService: SettingsService) { }
 
   ngOnInit(): void {
     this.menuTypes = [
@@ -52,6 +54,17 @@ export class AsaideComponent implements OnInit {
       }
     });
     this.messageService.add({severity: 'error', summary: 'Ошибка при запросе на сервер'});
+  }
+
+  initSettingsData(): void {
+    this.settingsService.loadUserSettingsSubject({
+      saveToken: false
+    });
+
+
+
+
+
   }
 
 }

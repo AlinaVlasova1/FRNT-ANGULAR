@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ObservableExampleService} from "../../services/testing/observable-example.service";
-import {Subject, Subscription} from "rxjs";
+import {Subject, Subscription, take, takeUntil} from "rxjs";
+import {SettingsService} from "../../services/settings/settings.service";
 
 @Component({
   selector: 'app-settings',
@@ -9,26 +10,26 @@ import {Subject, Subscription} from "rxjs";
 })
 export class SettingsComponent implements OnInit, OnDestroy {
 
-  private subjectScope: Subject<string> ;
-  private subjectUnsubscribe: Subscription ;
-
-  constructor(private obser: ObservableExampleService) { }
+  subjectForUnsubscribe = new Subject();
+  constructor(private obser: ObservableExampleService,
+              private settingsService: SettingsService) { }
 
   ngOnInit(): void {
-    this.subjectScope =  this.obser.getSubject();
-    const myObservable = this.obser.getObservable();
-    const unsubscribe =  myObservable.subscribe((data) => {
-      console.log(' myObservable data', data);
+
+    this.settingsService.loadUserSettings().pipe(takeUntil(this.subjectForUnsubscribe)).subscribe((data) => {
+      console.log("settings data", data);
     })
-    unsubscribe.unsubscribe();
-    this.subjectUnsubscribe = this.subjectScope.subscribe((data: string) => {
-      console.log('data', data)
-    })
-    this.subjectScope.next("data subjectScope");
+     this.settingsService.getSettingsSubjectObservable().pipe(takeUntil(this.subjectForUnsubscribe)).subscribe(
+      (data) => {
+        console.log("settings data from subject", data);
+      }
+    )
+
   }
 
   ngOnDestroy() {
-    this.subjectUnsubscribe.unsubscribe();
+  this.subjectForUnsubscribe.next(true);
+    this.subjectForUnsubscribe.complete();
   }
 
 }

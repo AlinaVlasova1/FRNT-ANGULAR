@@ -1,5 +1,6 @@
 {
   "serverProtocol": "http",
   "baseIndexHref": "/",
-  "runApp": true
+  "runApp": true,
+  "useUserCard": true
 }

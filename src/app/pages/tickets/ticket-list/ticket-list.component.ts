@@ -14,7 +14,7 @@ import {ITour, ITourTypeSelect} from "../../../models/tours";
 import {TiсketsStorageService} from "../../../services/tiсkets-storage/tiсkets-storage.service";
 import {Router} from "@angular/router";
 import {BlocksStyleDirective} from "../../../directive/blocks-style.directive";
-import {firstValueFrom, Observable, of, Subscription} from "rxjs";
+import {debounceTime, firstValueFrom, fromEvent, Observable, of, Subscription} from "rxjs";
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -23,6 +23,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./ticket-list.component.scss']
 })
 export class TicketListComponent implements OnInit, OnDestroy, AfterViewInit {
+
   tickets: ITour[] = [];
   ticketsCopy: ITour[];
   findTour: ITour | undefined;
@@ -31,6 +32,9 @@ export class TicketListComponent implements OnInit, OnDestroy, AfterViewInit {
   private tourUnsubscriber: Subscription;
   ticketsSub = this.ticketService.getTickets();
   searchvalue: string;
+  @ViewChild('ticketSearch') ticketSearch: ElementRef;
+  searchTicketSub: Subscription;
+  ticketSearchValue: string;
 
   constructor(private ticketService: TicketsService,
               private ticketStorage: TiсketsStorageService,
@@ -88,12 +92,21 @@ export class TicketListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(){
-
+    const fromEventObserver = fromEvent(this.ticketSearch.nativeElement, 'keyup')
+    this.searchTicketSub = fromEventObserver.pipe(
+      debounceTime(200)).subscribe((ev: any) => {
+        if (this.ticketSearchValue) {
+          this.tickets = this.ticketsCopy.filter((el) => el.name.includes(this.ticketSearchValue));
+        } else {
+          this.tickets = [...this.ticketsCopy];
+        }
+      });
   }
   ngOnDestroy() {
     if (this.tourUnsubscriber) {
       this.tourUnsubscriber.unsubscribe();
     }
+    this.searchTicketSub.unsubscribe();
 
   }
  /* startRender(ev: string){

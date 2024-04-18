@@ -1,4 +1,7 @@
-<app-search (tourEvent)="searchTour($event)"></app-search>
+<!--<app-search (tourEvent)="searchTour($event)"></app-search>-->
+<div>
+  <input #ticketSearch [(ngModel)]="ticketSearchValue" type="text" pInputText>
+</div>
 <div>
   <div>
     <p>Количество элементов: {{tickets.length}}</p>

@@ -6,10 +6,10 @@ import {IConfig} from "../../models/config";
   providedIn: 'root'
 })
 export class ConfigService {
-  static config: IConfig;
+  static config: any;
   constructor(private http: HttpClient) { }
 
-  /*configLoad (): void {
+  configLoad (): void {
     const jsonFile = `assets/config/config.json`;
     this.http.get(jsonFile).subscribe((data) => {
       if (data && typeof(data) === 'object') {
@@ -18,8 +18,8 @@ export class ConfigService {
       }
     })
 
-  }*/
-  loadPromise() {
+  }
+  loadPromise(): Promise<any> {
     const jsonFile = `assets/config/config.json`;
     const configPromise = new Promise<void>((resolve, reject) => {
       this.http.get(jsonFile).toPromise().then((response: any) => {
@@ -29,7 +29,7 @@ export class ConfigService {
           if (config) {
             // set origin host
             if (config.runApp) {
-              resolve();
+              resolve(config);
             } else {
               reject('Доступ к приложению запрещен ' + JSON.stringify(config));
             }

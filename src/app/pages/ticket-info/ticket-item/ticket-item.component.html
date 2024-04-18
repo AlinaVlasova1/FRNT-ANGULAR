@@ -58,6 +58,17 @@
           </div>
         </div>
       </div>
+      <div class="mt-4">
+        <h4>Похожие туры</h4>
+        <p-carousel [value]="nearstTours">
+          <ng-template let-tour pTemplate="item">
+            {{tour.name}}
+            <div class="ticket-img-nearest">
+              <img class="w-100 h-100" src="/assets/img/{{tour.img}}"/>
+            </div>
+          </ng-template>
+        </p-carousel>
+      </div>
     </div>
   </div>
 </div>
