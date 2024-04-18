@@ -60,6 +60,11 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
         visible: this.settingsActive
       },
       {
+        label: 'Заказы',
+        routerLink:['orders'],
+        visible: this.settingsActive
+      },
+      {
         label: 'Выйти',
         routerLink:['/auth']
       },
