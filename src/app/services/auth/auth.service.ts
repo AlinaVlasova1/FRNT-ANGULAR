@@ -5,7 +5,6 @@ import {IUser} from "../../models/users";
   providedIn: 'root'
 })
 export class AuthService {
-
   private userStorage: IUser[] = [];
   constructor() {
     console.log('runn')
@@ -32,5 +31,6 @@ export class AuthService {
     const isUserExists = this.userStorage.find((el) => el.login === user.login);
     return !!isUserExists;
   }
+
 
 }

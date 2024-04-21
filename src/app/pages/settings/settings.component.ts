@@ -2,6 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ObservableExampleService} from "../../services/testing/observable-example.service";
 import {Subject, Subscription, take, takeUntil} from "rxjs";
 import {SettingsService} from "../../services/settings/settings.service";
+import {AuthService} from "../../services/auth/auth.service";
+import {UserService} from "../../services/user/user.service";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-settings',
@@ -10,9 +13,14 @@ import {SettingsService} from "../../services/settings/settings.service";
 })
 export class SettingsComponent implements OnInit, OnDestroy {
 
+  newPsw: string;
+  newRepeatPsw: string;
+  currentPsw: string;
   subjectForUnsubscribe = new Subject();
   constructor(private obser: ObservableExampleService,
-              private settingsService: SettingsService) { }
+              private settingsService: SettingsService,
+              private userService: UserService,
+              private messageService: MessageService) { }
 
   ngOnInit(): void {
 
@@ -32,4 +40,20 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.subjectForUnsubscribe.complete();
   }
 
+  changePsw(ev: Event): void | boolean {
+    const authPsw = this.userService.getUser();
+    if (this.currentPsw != authPsw.password){
+      this.messageService.add({severity: 'error', summary: 'Не правильно введен текущий пароль'})
+      return false
+    }
+    else if (this.newPsw !== this.newRepeatPsw){
+      this.messageService.add({severity: 'error', summary: 'Пароли не совпадают'})
+      return false
+    }
+    else {
+      this.userService.setPsw(this.newPsw);
+      this.messageService.add({severity: 'success', summary: 'Успешная смена пароля'})
+    }
+
+  }
 }

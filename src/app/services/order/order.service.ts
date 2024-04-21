@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable, of, switchMap, withLatestFrom} from "rxjs";
-import {ORDERSMOCK, OrderType} from "../../shared/mocks/orfders";
+import {ORDERSMOCK, OrdersPropsType, OrderType} from "../../shared/mocks/orfders";
 import {TreeNode} from "primeng/api";
 import {map} from "rxjs/operators";
 
@@ -42,14 +42,52 @@ export class OrderService {
         console.log("group", group)
         return of(orders).pipe(
           map((data) => {
-            return [this.transformOrderData(data)]
-          })
-        )
+            if (group) {
+              return [this.groupData(data , 'name')];
+            } else {
+              return [this.transformOrderData(data)];
+            }
+
+          }));
       })
     )
   }
 
   initGroupOrders(val: boolean): void {
     this.groupOrders.next(val);
+  }
+
+  groupData(data: OrderType[], prop: OrdersPropsType): TreeNode<OrderType[]>{
+    const treeNodeObj: TreeNode = {
+      children: [],
+      data: {
+        name: 'Заказы',
+      },
+      expanded: true
+    }
+    if (Array.isArray(data)) {
+      data.reduce((acc: TreeNode<any>, el, index) => {
+        const targetItem = acc.children.find((treeEl) => treeEl.data[prop] === el[prop])
+        if (targetItem) {
+          const newTreeNode: TreeNode = {
+            data: el,
+            expanded: false
+          }
+          targetItem.children.push(newTreeNode);
+          } else {
+          const newTreeNode: TreeNode = {
+            data: el,
+            expanded: false,
+            children: []
+          }
+          acc.children.push(newTreeNode);
+        }
+        return treeNodeObj;
+      }, treeNodeObj);
+      console.log('treeNodeObj', treeNodeObj);
+      return treeNodeObj;
+    } else  {
+      return <TreeNode<OrderType[]>>[];
+    }
   }
 }

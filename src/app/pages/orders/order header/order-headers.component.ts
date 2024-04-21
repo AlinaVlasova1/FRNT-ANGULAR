@@ -13,7 +13,7 @@ export class OrderHeadersComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  groupOrders(ev: {cheked: boolean}): void {
-    this.orderService.initGroupOrders(ev.cheked);
+  groupOrders(ev: {checked: boolean}): void {
+    this.orderService.initGroupOrders(ev.checked);
   }
 }

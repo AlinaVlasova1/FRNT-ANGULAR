@@ -1,7 +1,19 @@
 import { Injectable } from '@angular/core';
 import {TicketRestService} from "../rest/ticket-rest.service";
-import {Observable, Subject} from "rxjs";
-import {INearestTour, ITour, ITourLocation, ITourTypeSelect} from "../../models/tours";
+import {
+  combineLatest,
+  combineLatestAll,
+  delay,
+  find,
+  forkJoin,
+  Observable,
+  of,
+  Subject,
+  switchMap,
+  takeUntil, tap,
+  timeout
+} from "rxjs";
+import {INearestTour, INewNearestTour, ITour, ITourLocation, ITourTypeSelect} from "../../models/tours";
 import {map} from "rxjs/operators";
 
 @Injectable({
@@ -10,9 +22,11 @@ import {map} from "rxjs/operators";
 export class TicketsService {
   obs = new Observable()
   private ticketSubject = new Subject<ITourTypeSelect>()
-
+   nearestTour: INearestTour[] ;
+  tourLocation: ITourLocation[] ;
 // 1 вариант доступа к Observable
   readonly ticketType$ = this.ticketSubject.asObservable();
+
 
   constructor(private ticketServiceRest: TicketRestService) { }
 
@@ -38,10 +52,27 @@ export class TicketsService {
   }
 
   getNearestTickets(): Observable<INearestTour[]>{
-    return this.ticketServiceRest.getNearestTickets();
+    return  this.ticketServiceRest.getNearestTickets();
   }
 
   getLocationList(): Observable<ITourLocation[]>{
-    return  this.ticketServiceRest.getLocationList();
+   return  this.ticketServiceRest.getLocationList()
   }
+
+  getNewNearstTours(): Observable<INewNearestTour[]>  {
+     return forkJoin([this.getNearestTickets(), this.getLocationList()]).pipe(
+
+       switchMap(([nearestTour, tourLocation]) => {
+           const newArr: INewNearestTour[] = nearestTour.map((el) => {
+           const location = tourLocation.find((loc) => loc.id === el.locationId);
+
+           return <INewNearestTour>{...el, ...{tourLocation: location.name}}
+       });
+
+      return of(newArr)
+      })
+  );
+
+}
+
 }

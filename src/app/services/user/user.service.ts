@@ -30,7 +30,7 @@ export class UserService {
       return realuser;
     } else {
       console.error("Error, undefined user");
-      return
+      return undefined;
     }
 
   }
@@ -46,7 +46,7 @@ export class UserService {
       return realToken;
     } else {
       console.error("Error, undefined token");
-      return ;
+      return undefined;
     }
   }
 
@@ -55,6 +55,17 @@ export class UserService {
   clearUserInfo(){
     this.user = undefined;
     this.token = undefined;
+    localStorage.clear();
     console.log("Clear user info");
   }
+
+  setPsw(psw: string){
+    const userFromStore = localStorage.getItem('user');
+    const user = JSON.parse(userFromStore);
+    localStorage.clear();
+    user.password = psw;
+    localStorage.setItem( 'user', JSON.stringify(user));
+  }
+
+
 }

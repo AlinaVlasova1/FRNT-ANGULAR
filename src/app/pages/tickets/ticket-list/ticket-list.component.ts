@@ -96,7 +96,7 @@ export class TicketListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.searchTicketSub = fromEventObserver.pipe(
       debounceTime(200)).subscribe((ev: any) => {
         if (this.ticketSearchValue) {
-          this.tickets = this.ticketsCopy.filter((el) => el.name.includes(this.ticketSearchValue));
+          this.tickets = this.ticketsCopy.filter((el) => el.name.toLowerCase().includes(this.ticketSearchValue.toLowerCase()));
         } else {
           this.tickets = [...this.ticketsCopy];
         }

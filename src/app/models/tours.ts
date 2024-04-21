@@ -23,3 +23,8 @@ export interface ITourLocation {
   name: string,
   id: string
 }
+
+export interface INewNearestTour extends INearestTour{
+  tourLocation: string
+}
+
