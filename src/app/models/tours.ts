@@ -28,3 +28,6 @@ export interface INewNearestTour extends INearestTour{
   tourLocation: string
 }
 
+export interface ICustomTicketData  extends INearestTour{
+  region: string
+}

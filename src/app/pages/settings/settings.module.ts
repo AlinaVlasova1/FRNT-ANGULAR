@@ -10,12 +10,15 @@ import {FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {MessagesModule} from "primeng/messages";
 import {ToastModule} from "primeng/toast";
+import { StatisticComponent } from './statistic/statistic.component';
+import {TableModule} from "primeng/table";
 
 
 @NgModule({
   declarations: [
     SettingsComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    StatisticComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +27,8 @@ import {ToastModule} from "primeng/toast";
     FormsModule,
     InputTextModule,
     MessagesModule,
-    ToastModule
+    ToastModule,
+    TableModule
   ]
 })
 export class SettingsModule { }

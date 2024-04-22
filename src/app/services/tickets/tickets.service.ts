@@ -13,7 +13,14 @@ import {
   takeUntil, tap,
   timeout
 } from "rxjs";
-import {INearestTour, INewNearestTour, ITour, ITourLocation, ITourTypeSelect} from "../../models/tours";
+import {
+  ICustomTicketData,
+  INearestTour,
+  INewNearestTour,
+  ITour,
+  ITourLocation,
+  ITourTypeSelect
+} from "../../models/tours";
 import {map} from "rxjs/operators";
 
 @Injectable({
@@ -73,6 +80,23 @@ export class TicketsService {
       })
   );
 
-}
+  }
+  transforData(data: INearestTour[], regions: ITourLocation[]): ICustomTicketData[] {
+    const newTicketData: ICustomTicketData[] = [];
+    data.forEach((el) => {
+      const newEl = <ICustomTicketData> {...el};
+      newEl.region = (regions.find((region) => el.locationId === region.id)).name;
+      newTicketData.push(newEl);
+    })
+    return newTicketData;
+  }
+
+  getRandomNearestEvent(type: number): Observable<INearestTour>{
+    return this.ticketServiceRest.getRandomNearestEvent(type);
+  }
+
+  sendTourData(data: any): Observable<any>{
+    return this.ticketServiceRest.sendTourData(data);
+  }
 
 }
