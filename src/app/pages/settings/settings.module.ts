@@ -6,19 +6,24 @@ import { SettingsComponent } from './settings.component';
 import {HeaderComponent} from "../tickets/header/header.component";
 import {TabViewModule} from "primeng/tabview";
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {MessagesModule} from "primeng/messages";
 import {ToastModule} from "primeng/toast";
 import { StatisticComponent } from './statistic/statistic.component';
 import {TableModule} from "primeng/table";
+import {FileUploadModule} from "primeng/fileupload";
+import { UsersComponent } from './users/users.component';
+import { FilterPipe } from './pipes/filter.pipe';
 
 
 @NgModule({
   declarations: [
     SettingsComponent,
     ChangePasswordComponent,
-    StatisticComponent
+    StatisticComponent,
+    UsersComponent,
+    FilterPipe
   ],
   imports: [
     CommonModule,
@@ -28,7 +33,9 @@ import {TableModule} from "primeng/table";
     InputTextModule,
     MessagesModule,
     ToastModule,
-    TableModule
+    TableModule,
+    ReactiveFormsModule,
+    FileUploadModule
   ]
 })
 export class SettingsModule { }

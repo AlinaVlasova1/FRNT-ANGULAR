@@ -20,19 +20,7 @@ export class UserService {
     }
   }
   getUser(): IUser | undefined {
-    const stringFromStore = localStorage.getItem('user');
-    let userFromStore ;
-    if (stringFromStore) {
-      userFromStore = JSON.parse(stringFromStore);
-    }
-    const realuser = this.user || userFromStore;
-    if(realuser){
-      return realuser;
-    } else {
-      console.error("Error, undefined user");
-      return undefined;
-    }
-
+    return this.user || this.getFromStorage();
   }
   setToken(token: string): void{
     this.token = token;
@@ -67,5 +55,13 @@ export class UserService {
     localStorage.setItem( 'user', JSON.stringify(user));
   }
 
+  getFromStorage(): IUser | null {
+
+    const userFromStore = localStorage.getItem('user');
+    if (userFromStore) {
+      return JSON.parse(userFromStore);
+    }
+    return null;
+  }
 
 }
