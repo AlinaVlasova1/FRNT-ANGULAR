@@ -3,6 +3,8 @@ import {MessageService} from "primeng/api";
 import {IUser} from "../../../models/users";
 import {AuthService} from "../../../services/auth/auth.service";
 import {ConfigService} from "../../../services/config/config.service";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {ServerError} from "../../../models/error";
 
 @Component({
   selector: 'app-registration',
@@ -16,11 +18,13 @@ export class RegistrationComponent implements OnInit {
   passwordRepeat: string;
   email: string;
   cardNumber: string;
+  id: string;
   selectedValue: boolean;
   saveUserInStore: boolean;
   showCardNumber: boolean;
   constructor(private messageService: MessageService,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private http: HttpClient) { }
 
   ngOnInit(): void {
     this.showCardNumber = ConfigService.config.useUserCard;
@@ -37,17 +41,22 @@ export class RegistrationComponent implements OnInit {
       password: this.password,
       cardNumber: this.cardNumber,
       login: this.login,
-      email: this.email
+      email: this.email,
+      id: this.id
     }
-    if (!this.authService.isUserExists(userObj)){
-      this.authService.setUser(userObj);
-      this.messageService.add({severity: 'success', summary: 'Регистрация прошла успешно'})
-      if (this.selectedValue){
-        localStorage.setItem(`user${this.login}`, JSON.stringify(userObj));
+
+    this.http.post<IUser>('http://localhost:3000/users/', userObj).subscribe((data) => {
+      if (this.saveUserInStore) {
+        const objUserJsonStr = JSON.stringify(userObj);
+        window.localStorage.setItem('user_'+userObj.login, objUserJsonStr);
       }
-    } else {
-      this.messageService.add({severity: 'warn', summary: 'Пользователь уже зарегестрирован'})
-    }
+      this.messageService.add({severity:'success', summary:'Регистрация прошла успешно'});
+
+    }, (err: HttpErrorResponse)=> {
+      console.log("err", err);
+      const serverError = <ServerError> err.error;
+      this.messageService.add({severity:'warn', summary: serverError.errorText});
+    });
 
   }
 

@@ -5,6 +5,7 @@ import {MessageService} from "primeng/api";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../../services/user/user.service";
 import {ConfigService} from "../../../services/config/config.service";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-authorization',
@@ -17,6 +18,7 @@ export class AuthorizationComponent implements OnInit, OnDestroy {
   passwordText = "Пароль";
   password: string;
   login: string;
+  id: string;
   selectedValue: boolean;
   cardNumber: string;
   authTextButton: string;
@@ -25,7 +27,8 @@ export class AuthorizationComponent implements OnInit, OnDestroy {
               private messageService: MessageService,
               private router: Router,
               private route: ActivatedRoute,
-              private userService: UserService) { }
+              private userService: UserService,
+              private http: HttpClient) { }
 
   ngOnInit(): void {
     this.authTextButton = "Авторизоваться";
@@ -43,15 +46,23 @@ export class AuthorizationComponent implements OnInit, OnDestroy {
     const authUser: IUser = {
       password: this.password,
       login: this.login,
-      cardNumber: this.cardNumber
+      cardNumber: this.cardNumber,
+      id: this.id
+
     }
-    if(this.authService.checkUser(authUser)){
-      this.router.navigate(['tickets/tickets-list']);
+    this.http.post<{ access_token:string }>('http://localhost:3000/users/'+authUser.login, authUser).subscribe((data) => {
+
       this.userService.setUser(authUser);
-      this.userService.setToken('user-private-token');
-    } else {
-      this.messageService.add({severity: 'error', summary: 'Данные введены не правильно'});
-    }
+      const token: string = 'user-private-token'+ data.access_token;
+      this.userService.setToken(token);
+     /* this.userService.setToStore(token);*/
+
+
+      this.router.navigate(['tickets/tickets-list']);
+
+    }, ()=> {
+      this.messageService.add({severity:'warn', summary:"Ошибка"});
+    });
 
   }
 

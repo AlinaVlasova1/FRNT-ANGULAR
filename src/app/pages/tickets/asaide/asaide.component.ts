@@ -4,6 +4,7 @@ import {ITourTypeSelect} from "../../../models/tours";
 import {TicketsService} from "../../../services/tickets/tickets.service";
 import {MessageService} from "primeng/api";
 import {SettingsService} from "../../../services/settings/settings.service";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-asaide',
@@ -21,7 +22,8 @@ export class AsaideComponent implements OnInit {
   @Output() updateMenuType: EventEmitter<IMenuType> = new EventEmitter();
   constructor(private ticketService: TicketsService,
               private messageService: MessageService,
-              private settingsService: SettingsService) { }
+              private settingsService: SettingsService,
+              private http: HttpClient) { }
 
   ngOnInit(): void {
     this.menuTypes = [
@@ -60,11 +62,14 @@ export class AsaideComponent implements OnInit {
     this.settingsService.loadUserSettingsSubject({
       saveToken: false
     });
+  }
 
+  initTours(): void {
+    this.http.get('http://localhost:3000/tours/').subscribe((data) => {});
+  }
 
-
-
-
+  deleteTours():void {
+    this.http.get('http://localhost:3000/tours/remove').subscribe((data) => {});
   }
 
 }
