@@ -33,7 +33,8 @@ export class TicketsService {
   tourLocation: ITourLocation[] ;
 // 1 вариант доступа к Observable
   readonly ticketType$ = this.ticketSubject.asObservable();
-
+  private ticketUpdateSubject = new Subject<ITour[]>();
+  readonly ticketUpdateSubject$ = this.ticketUpdateSubject.asObservable();
 
   constructor(private ticketServiceRest: TicketRestService) { }
 
@@ -97,6 +98,14 @@ export class TicketsService {
 
   sendTourData(data: any): Observable<any>{
     return this.ticketServiceRest.sendTourData(data);
+  }
+
+  updateTicketList(data: ITour[]) {
+    this.ticketUpdateSubject.next(data);
+  }
+
+  getTicketById(id: string) {
+    return this.ticketServiceRest.getTicketById(id);
   }
 
 }

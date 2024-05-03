@@ -13,15 +13,13 @@ export class TicketRestService {
               private userService: UserService) { }
 
   getTickets(): Observable <ITour[]>{
-
-    this.userService.setToken('user-private-token');
     const token = this.userService.getToken();
 
     const header = new Headers({ 'Authorization': `Bearer ${token}` });
     const options = {
       headers: header,
     };
-    return this.http.get<ITour[]>('https://62b9e756ff109cd1dc9dae16.mockapi.io/apiv/v1/tours/',
+    return this.http.get<ITour[]>('http://localhost:3000/tours/',
       {headers: { 'Authorization': `Bearer ${token}` }});
   }
 
@@ -53,5 +51,9 @@ export class TicketRestService {
 
   sendTourData(data: any): Observable<any>{
    return  this.http.post('/assets/mocks/nearestTours2.json', data);
+  }
+
+  getTicketById(id: string){
+    return this.http.get(`http://localhost:3000/tours/${id}`);
   }
 }

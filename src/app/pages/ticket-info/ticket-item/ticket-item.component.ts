@@ -53,7 +53,7 @@ export class TicketItemComponent implements OnInit, OnDestroy, AfterViewInit {
     const queryIdParam = this.route.snapshot.queryParamMap.get('id');
     const paramValueId = routeIdParam || queryIdParam;
     if (paramValueId){
-      const ticketStorage = this.ticketStorage.getStorage();
+      const ticketStorage = this.ticketService.getTicketById(paramValueId);
       if (Array.isArray(ticketStorage)) {
         this.ticket = ticketStorage.find((el) => el.id === paramValueId);
         console.log("this.ticket", this.ticket);

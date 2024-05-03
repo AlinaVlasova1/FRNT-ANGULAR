@@ -1,9 +1,10 @@
 export interface IUser {
   login: string,
   email?: string,
-  password: string,
+  password?: string,
   cardNumber?: string,
-  id: string
+  id: string,
+  psw?: string
 }
 
 export const TOKEN_STORE_NAME = 'token';
