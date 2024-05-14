@@ -7,6 +7,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../services/user/user.service";
 import {TicketsService} from "../../../services/tickets/tickets.service";
 import {concat, forkJoin, fromEvent, map, Subscription} from "rxjs";
+import {IOrder} from "../../../models/order";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-ticket-item',
@@ -27,10 +29,11 @@ export class TicketItemComponent implements OnInit, OnDestroy, AfterViewInit {
   searchTicketSub: Subscription;
   ticketRestSub: Subscription;
   searchTypes = [1, 2, 3];
+  ticketStorage: ITour[];
   constructor(private route: ActivatedRoute,
-              private ticketStorage: TiсketsStorageService,
               private userService: UserService,
-              private ticketService: TicketsService) { }
+              private ticketService: TicketsService,
+              private location: Location) { }
 
   ngOnInit(): void {
     this.user = this.userService.getUser();
@@ -53,11 +56,14 @@ export class TicketItemComponent implements OnInit, OnDestroy, AfterViewInit {
     const queryIdParam = this.route.snapshot.queryParamMap.get('id');
     const paramValueId = routeIdParam || queryIdParam;
     if (paramValueId){
-      const ticketStorage = this.ticketService.getTicketById(paramValueId);
-      if (Array.isArray(ticketStorage)) {
-        this.ticket = ticketStorage.find((el) => el.id === paramValueId);
-        console.log("this.ticket", this.ticket);
-      }
+       this.ticketService.getTicketById(paramValueId).subscribe((data) => {
+          /*this.ticketStorage = data;*/
+          console.log("data tickets array", data);
+           /*this.ticket = this.ticketStorage.find((el) => el._id == paramValueId);*/
+         this.ticket = data;
+           console.log("this.ticket", this.ticket);
+      });
+
     }
 
     this.ticketService.getNewNearstTours().subscribe((data) => {
@@ -100,7 +106,15 @@ export class TicketItemComponent implements OnInit, OnDestroy, AfterViewInit {
   initTour(): void{
     const useData = this.userForm.getRawValue();
     const postData = {...this.ticket, ...useData};
-    this.ticketService.sendTourData(postData).subscribe()
+    const userId = this.userService.getUser()?.id || null;
+    const postObj: IOrder = {
+      age: postData.age,
+      birthDay: postData.birthDay,
+      cardNumber: postData.cardNumber,
+      tourId: postData._id,
+      userId: userId
+    }
+    this.ticketService.sendTourData(postObj).subscribe()
     }
 
 

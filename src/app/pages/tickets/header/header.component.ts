@@ -30,6 +30,10 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
         routerLink:['settings']
       },
       {
+        label: 'Заказы',
+        routerLink:['orders']
+      },
+      {
         label: 'Выйти',
         routerLink: ['/auth']
       },

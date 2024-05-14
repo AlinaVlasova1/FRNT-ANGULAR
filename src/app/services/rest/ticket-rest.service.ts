@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {INearestTour, ITour, ITourLocation} from "../../models/tours";
 import {Observable} from "rxjs";
 import {UserService} from "../user/user.service";
+import {IOrder} from "../../models/order";
 
 @Injectable({
   providedIn: 'root'
@@ -49,11 +50,16 @@ export class TicketRestService {
     }
   }
 
-  sendTourData(data: any): Observable<any>{
-   return  this.http.post('/assets/mocks/nearestTours2.json', data);
+  sendTourData(data: IOrder): Observable<IOrder>{
+   return  this.http.post<IOrder>('http://localhost:3000/orders/', data);
   }
 
-  getTicketById(id: string){
-    return this.http.get(`http://localhost:3000/tours/${id}`);
+  getTicketById(id: string): Observable<ITour> {
+    return this.http.get<ITour>(`http://localhost:3000/tours/${id}`);
+  }
+
+  createTour(body: any): Observable<any> {
+    return this.http.post(`http://localhost:3000/tour-item/`, body
+    )
   }
 }

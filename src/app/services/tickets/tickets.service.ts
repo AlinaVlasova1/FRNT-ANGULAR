@@ -108,4 +108,7 @@ export class TicketsService {
     return this.ticketServiceRest.getTicketById(id);
   }
 
+  createTour(body: any) {
+    return this.ticketServiceRest.createTour(body);
+  }
 }

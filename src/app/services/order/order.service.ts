@@ -3,6 +3,8 @@ import {BehaviorSubject, Observable, of, switchMap, withLatestFrom} from "rxjs";
 import {ORDERSMOCK, OrdersPropsType, OrderType} from "../../shared/mocks/orfders";
 import {TreeNode} from "primeng/api";
 import {map} from "rxjs/operators";
+import {HttpClient} from "@angular/common/http";
+import {IOrder} from "../../models/order";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ import {map} from "rxjs/operators";
 export class OrderService {
   private groupOrders = new BehaviorSubject(false);
   readonly groupOrders$ = this.groupOrders.asObservable();
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
 
   transformOrderData(data: OrderType[]): TreeNode<OrderType[]>{
@@ -35,8 +37,9 @@ export class OrderService {
     return treeNodeObj;
   }
 
-  getOrders():Observable<TreeNode<OrderType[]>[]>{
-    return of(ORDERSMOCK).pipe(
+  getOrders():Observable<IOrder[]>{
+    return this.http.get<IOrder[]>(`http://localhost:3000/orders/`);
+    /*return of(ORDERSMOCK).pipe(
       withLatestFrom(this.groupOrders$),
       switchMap(([orders, group]) => {
         console.log("group", group)
@@ -50,7 +53,7 @@ export class OrderService {
 
           }));
       })
-    )
+    )*/
   }
 
   initGroupOrders(val: boolean): void {

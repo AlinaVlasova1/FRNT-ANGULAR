@@ -3,6 +3,7 @@ import {Observable, Subscription} from "rxjs";
 import {TreeNode} from "primeng/api";
 import {OrderType} from "../../shared/mocks/orfders";
 import {OrderService} from "../../services/order/order.service";
+import {IOrder} from "../../models/order";
 
 
 @Component({
@@ -11,7 +12,7 @@ import {OrderService} from "../../services/order/order.service";
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent implements OnInit, OnDestroy{
-  tableData$: Observable<TreeNode<OrderType[]>[]>;
+  tableData$: Observable<IOrder[]>;
   private _destroyer: Subscription;
 
 

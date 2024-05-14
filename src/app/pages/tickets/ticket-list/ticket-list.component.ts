@@ -47,6 +47,9 @@ export class TicketListComponent implements OnInit, OnDestroy, AfterViewInit {
  /* @ViewChild(BlocksStyleDirective) blocksDirective1: BlocksStyleDirective;*/
 
   ngOnInit(): void {
+    this.ticketService.ticketUpdateSubject$.subscribe((data) => {
+      this.tickets = data;
+    })
      this.ticketService.getTickets().subscribe(
        (data: ITour[]) => {
          if (Array.isArray(data)) {
@@ -140,7 +143,7 @@ export class TicketListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToTicketInfoPage(item: ITour){
-    this.router.navigate([`/tickets/ticket/${item.id}`]);
+    this.router.navigate([`/tickets/ticket/${item._id}`]).then();
   }
 
   startRender(){

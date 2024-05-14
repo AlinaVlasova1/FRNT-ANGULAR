@@ -1,4 +1,4 @@
-<app-order-headers></app-order-headers>
+<!--<app-order-headers></app-order-headers>
 <p-treeTable [value]="(tableData$ | async)" >
   <ng-template pTemplate="header">
     <tr>
@@ -17,4 +17,24 @@
       <td>{{ rowData.type }}</td>
     </tr>
   </ng-template>
-</p-treeTable>
+</p-treeTable>-->
+<p-table [value]="(tableData$ | async)">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Age</th>
+      <th>BirthDay</th>
+      <th>CardNumber</th>
+      <th>tourId</th>
+      <th>userId</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-order>
+    <tr>
+      <td>{{ order.age }}</td>
+      <td>{{ order.birthDay }}</td>
+      <td>{{ order.cardNumber }}</td>
+      <td>{{ order.tourId }}</td>
+      <td>{{ order.userId }}</td>
+    </tr>
+  </ng-template>
+</p-table>

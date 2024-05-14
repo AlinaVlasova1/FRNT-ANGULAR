@@ -13,7 +13,6 @@
         "@schematics/angular:service": {
           "skipTests": true
         },
-        ,
         "@schematics/angular:pipe": {
           "skipTests": true
         }

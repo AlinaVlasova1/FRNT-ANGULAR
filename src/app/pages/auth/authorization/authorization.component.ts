@@ -50,8 +50,8 @@ export class AuthorizationComponent implements OnInit, OnDestroy {
       id: this.id
 
     }
-    this.http.post<{ access_token:string }>('http://localhost:3000/users/'+authUser.login, authUser).subscribe((data) => {
-
+    this.http.post<{ access_token:string, id: string }>('http://localhost:3000/users/'+authUser.login, authUser).subscribe((data) => {
+      authUser.id = data.id;
       this.userService.setUser(authUser);
       const token: string = 'user-private-token'+ data.access_token;
       this.userService.setToken(token);

@@ -6,6 +6,7 @@ import { OrdersComponent } from './orders.component';
 import {TreeTableModule} from "primeng/treetable";
 import {CheckboxModule} from "primeng/checkbox";
 import {OrderHeadersComponent} from "./order header/order-headers.component";
+import {TableModule} from "primeng/table";
 
 
 
@@ -14,11 +15,12 @@ import {OrderHeadersComponent} from "./order header/order-headers.component";
     OrdersComponent,
     OrderHeadersComponent
   ],
-  imports: [
-    CommonModule,
-    OrdersRoutingModule,
-    TreeTableModule,
-    CheckboxModule
-  ]
+    imports: [
+        CommonModule,
+        OrdersRoutingModule,
+        TreeTableModule,
+        CheckboxModule,
+        TableModule
+    ]
 })
 export class OrdersModule { }

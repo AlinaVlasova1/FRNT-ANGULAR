@@ -15,6 +15,7 @@ import {TableModule} from "primeng/table";
 import {FileUploadModule} from "primeng/fileupload";
 import { UsersComponent } from './users/users.component';
 import { FilterPipe } from './pipes/filter.pipe';
+import { TourLoaderComponent } from './tour-loader/tour-loader.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { FilterPipe } from './pipes/filter.pipe';
     ChangePasswordComponent,
     StatisticComponent,
     UsersComponent,
-    FilterPipe
+    FilterPipe,
+    TourLoaderComponent
   ],
   imports: [
     CommonModule,
