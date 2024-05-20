@@ -32,3 +32,10 @@ export interface INewNearestTour extends INearestTour{
 export interface ICustomTicketData  extends INearestTour{
   region: string
 }
+export interface ITourClient {
+  name: string,
+  description: string,
+  tourOperator: string,
+  price: string,
+  img: string
+}

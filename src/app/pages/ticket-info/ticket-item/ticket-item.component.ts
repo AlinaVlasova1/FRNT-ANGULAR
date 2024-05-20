@@ -20,9 +20,9 @@ export class TicketItemComponent implements OnInit, OnDestroy, AfterViewInit {
   ticket: ITour | undefined;
   user: IUser | undefined;
   userForm: FormGroup;
-  nearstTours: INearestTour[] = [];
+  nearstTours: ITour[] = [];
   toursLocation: ITourLocation[];
-  newNearstTours: INewNearestTour[];
+  newNearstTours: ITour[];
 
   ticketSearchValue: string;
   @ViewChild('ticketSearch') ticketSearch: ElementRef;
@@ -46,11 +46,11 @@ export class TicketItemComponent implements OnInit, OnDestroy, AfterViewInit {
       citizen: new FormControl('')
     })
 
-     forkJoin([this.ticketService.getNearestTickets(), this.ticketService.getLocationList()]).subscribe((data) => {
+     /*forkJoin([this.ticketService.getNearestTickets(), this.ticketService.getLocationList()]).subscribe((data) => {
        console.log("data", data);
        this.nearstTours = this.ticketService.transforData( data[0], data[1] );
        this.toursLocation = data[1];
-     })
+     })*/
 
     const routeIdParam = this.route.snapshot.paramMap.get('id');
     const queryIdParam = this.route.snapshot.queryParamMap.get('id');
@@ -66,9 +66,9 @@ export class TicketItemComponent implements OnInit, OnDestroy, AfterViewInit {
 
     }
 
-    this.ticketService.getNewNearstTours().subscribe((data) => {
+    this.ticketService.getTours().subscribe((data) => {
       console.log('xxx', data)
-         this.newNearstTours = data
+         this.nearstTours = data
       });
 
 
@@ -94,13 +94,16 @@ export class TicketItemComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   initSearchTour(): void {
-    const type = Math.floor(Math.random() * this.searchTypes.length);
+    /*const type = Math.floor(Math.random() * this.searchTypes.length);*/
     if (this.ticketRestSub && !this.searchTicketSub.closed) {
       this.ticketRestSub.unsubscribe();
     }
-    this.ticketRestSub = this.ticketService.getRandomNearestEvent(type).subscribe((data) => {
+    /*this.ticketRestSub = this.ticketService.getRandomNearestEvent(type).subscribe((data) => {
       this.nearstTours = this.ticketService.transforData([data], this.toursLocation)
-    })
+    })*/
+     this.ticketService.searchTour(this.ticketSearchValue).subscribe((data) => {
+       this.nearstTours = data;
+    });
   }
 
   initTour(): void{

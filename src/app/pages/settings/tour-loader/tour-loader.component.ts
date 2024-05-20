@@ -35,7 +35,7 @@ export class TourLoaderComponent implements OnInit {
 
   selectFile(ev: any): void {
     console.log("ev", ev)
-    if (Array.isArray(ev.target.files) && ev.target.files.length > 0) {
+    if ( ev.target.files.length > 0) {
       const file = ev.target.files[0];
       this.tourForm.patchValue({
         img: file

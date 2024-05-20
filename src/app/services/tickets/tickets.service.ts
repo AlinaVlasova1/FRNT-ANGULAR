@@ -17,7 +17,7 @@ import {
   ICustomTicketData,
   INearestTour,
   INewNearestTour,
-  ITour,
+  ITour, ITourClient,
   ITourLocation,
   ITourTypeSelect
 } from "../../models/tours";
@@ -59,7 +59,7 @@ export class TicketsService {
     return this.ticketServiceRest.getRestError();
   }
 
-  getNearestTickets(): Observable<INearestTour[]>{
+  getNearestTickets(): Observable<ITour[]>{
     return  this.ticketServiceRest.getNearestTickets();
   }
 
@@ -67,8 +67,10 @@ export class TicketsService {
    return  this.ticketServiceRest.getLocationList()
   }
 
-  getNewNearstTours(): Observable<INewNearestTour[]>  {
-     return forkJoin([this.getNearestTickets(), this.getLocationList()]).pipe(
+  getTours(): Observable<ITour[]>  {
+
+    return this.getNearestTickets();
+     /*return forkJoin([this.getNearestTickets(), this.getLocationList()]).pipe(
 
        switchMap(([nearestTour, tourLocation]) => {
            const newArr: INewNearestTour[] = nearestTour.map((el) => {
@@ -79,7 +81,7 @@ export class TicketsService {
 
       return of(newArr)
       })
-  );
+  );*/
 
   }
   transforData(data: INearestTour[], regions: ITourLocation[]): ICustomTicketData[] {
@@ -110,5 +112,9 @@ export class TicketsService {
 
   createTour(body: any) {
     return this.ticketServiceRest.createTour(body);
+  }
+
+  searchTour(name: string): Observable<ITour[]> {
+    return this.ticketServiceRest.getTicketByName(name);
   }
 }

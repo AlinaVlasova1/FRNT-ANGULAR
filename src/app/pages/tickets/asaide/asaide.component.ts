@@ -65,9 +65,12 @@ export class AsaideComponent implements OnInit {
   }
 
   initTours(): void {
-    this.http.post<ITour[]>('http://localhost:3000/tours/', {}).subscribe((data: ITour[]) => {
+    /*this.http.post<ITour[]>('http://localhost:3000/tours/', {}).subscribe((data: ITour[]) => {
       this.ticketService.updateTicketList(data);
-    });
+    });*/
+    this.http.get<ITour[]>('http://localhost:3000/tours/').subscribe((data: ITour[]) => {
+      this.ticketService.updateTicketList(data);
+    })
   }
 
   deleteTours():void {
