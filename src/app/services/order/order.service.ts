@@ -5,6 +5,7 @@ import {TreeNode} from "primeng/api";
 import {map} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
 import {IOrder} from "../../models/order";
+import {ITour} from "../../models/tours";
 
 @Injectable({
   providedIn: 'root'

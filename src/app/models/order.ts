@@ -1,3 +1,5 @@
+import {ITour} from "./tours";
+
 export interface IOrder {
   age: string | null,
   birthDay: string | null,
@@ -5,3 +7,5 @@ export interface IOrder {
   tourId: string | null,
   userId: string | null,
 }
+
+export type IOrdersAndTours = IOrder[] & ITour[];

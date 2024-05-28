@@ -9,7 +9,7 @@
     "strictNullChecks": false,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": false,
-    "noImplicitReturns": true,
+    "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": false,
     "sourceMap": true,
     "declaration": false,
@@ -21,8 +21,11 @@
     "target": "es2020",
     "module": "es2020",
     "lib": [
+      "es5", "es6",
       "es2020",
-      "dom"
+      "dom",
+      "dom.iterable",
+      "es2015.iterable"
     ]
   },
   "angularCompilerOptions": {
